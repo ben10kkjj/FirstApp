@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pedrohenrique.firstapp.R
-import com.pedrohenrique.firstapp.databinding.ActivityMainBinding
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.pedrohenrique.firstapp.databinding.FragmentCalcBinding
+import com.pedrohenrique.firstapp.service.model.Pessoa
+import com.pedrohenrique.firstapp.viewmodel.PessoaViewModel
 import java.time.LocalDateTime
 
-class CalcFragment : Fragment(){
+class PessoaFragment : Fragment(){
+    private val  viewModel: PessoaViewModel by viewModels()
 
     private var _binding: FragmentCalcBinding? = null
     private val binding: FragmentCalcBinding get() = _binding!!
@@ -29,14 +32,31 @@ class CalcFragment : Fragment(){
 
         binding.btnEnviar.setOnClickListener {
             var nome = binding.etNome.editableText.toString()
-
-            binding.tvNome.text = "Nome: " + nome
-
             var anoNascimento = binding.etIdade.editableText.toString()
-            val anoAtual = LocalDateTime.now().year
-            var idade = anoAtual - anoNascimento.toInt()
 
-            binding.tvIdade.text = "Idade: ${idade}"
+            if (nome !=""&&anoNascimento !=""){
+
+                binding.tvNome.text = "Nome: " + nome
+
+
+                val anoAtual = LocalDateTime.now().year
+                var idade = anoAtual - anoNascimento.toInt()
+
+                binding.tvIdade.text = "Idade: ${idade}"
+
+                val pessoa = Pessoa(
+                    nome = nome,
+                    idade = idade
+                )
+                viewModel.insert(pessoa)
+
+                binding.etNome.editableText.clear()
+                binding.etIdade.editableText.clear()
+            }else{
+                Toast.makeText(requireContext(),"Digite os dados", Toast.LENGTH_LONG).show()
+            }
+
+
 
         }
     }
