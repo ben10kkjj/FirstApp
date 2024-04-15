@@ -13,7 +13,7 @@ class PessoaRepository(context: Context) {
     suspend fun  getPessoa(id:Int){
         firstAppDb.getPessoa(id)
     }
-    suspend fun getPessoa(): List<Pessoa>{
+    suspend fun getPessoas(): List<Pessoa>{
         return firstAppDb.getAll()
     }
     suspend fun updatePessoa(pessoa: Pessoa){

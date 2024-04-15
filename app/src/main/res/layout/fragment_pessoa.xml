@@ -15,13 +15,6 @@
         android:text="Nome:"
         android:textSize="24sp"
         />
-    <TextView
-        android:id="@+id/tvIdade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Idade:"
-        android:textSize="24sp"
-        />
     <EditText
         android:id="@+id/etNome"
         android:layout_width="match_parent"
@@ -30,12 +23,35 @@
         android:inputType="text"
         android:layout_gravity="center"
         />
+    <TextView
+        android:id="@+id/tvIdade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Idade:"
+        android:textSize="24sp"
+        />
+
     <EditText
         android:id="@+id/etIdade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Digite sua idade:"
         android:inputType="number"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/tvSexo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sexo:"
+        android:textSize="24sp"
+        />
+    <EditText
+        android:id="@+id/etSexo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite seu sexo:"
+        android:inputType="text"
         android:layout_gravity="center"
         />
 
