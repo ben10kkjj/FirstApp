@@ -46,15 +46,24 @@
         android:text="Sexo:"
         android:textSize="24sp"
         />
-    <EditText
-        android:id="@+id/etSexo"
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/rgSexo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Digite seu sexo:"
-        android:inputType="text"
-        android:layout_gravity="center"
-        />
-
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rbMasculino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Masculino"/>
+    <RadioButton
+        android:id="@+id/rbFeminino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Feminino"/>
+    </RadioGroup>
     <Button
         android:id="@+id/btnEnviar"
         android:layout_width="98dp"
@@ -63,5 +72,13 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         />
+    <Button
+        android:id="@+id/btnDeletar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Excluir"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:visibility="invisible"/>
 
 </LinearLayout>

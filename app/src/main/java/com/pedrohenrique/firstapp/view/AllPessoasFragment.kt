@@ -37,9 +37,14 @@ class AllPessoasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //quando clicar em algum item da lista
-        adapter = PessoaAdapter(viewModel.pessoaList.value) {
 
+
+        //quando clicar em algum item da lista
+        adapter = PessoaAdapter(viewModel.pessoaList.value) {pessoa ->
+            val pessoaBundle = Bundle()
+            pessoaBundle.putInt("pessoaId", pessoa.id)
+            arguments = pessoaBundle
+            findNavController().navigate(R.id.pessoaFragment, arguments)
         }
         //configurar a recycler
         val recycler = binding.rvPessoas

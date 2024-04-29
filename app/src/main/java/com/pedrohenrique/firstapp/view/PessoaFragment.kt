@@ -1,5 +1,6 @@
 package com.pedrohenrique.firstapp.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.pedrohenrique.firstapp.databinding.FragmentPessoaBinding
 import com.pedrohenrique.firstapp.service.model.Pessoa
@@ -31,14 +33,26 @@ class PessoaFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Carregar a pessoa caso tenha selecionado
+        arguments?.let {
+            viewModel.getPessoa(it.getInt("pessoaId"))
+        }
+
         binding.btnEnviar.setOnClickListener {
             var nome = binding.etNome.editableText.toString()
             var anoNascimento = binding.etIdade.editableText.toString()
-            var sexo = binding.etSexo.editableText.toString()
+            var sexo = ""
             var faixaE = ""
-            if (nome !=""&&anoNascimento !=""){
 
-                binding.tvNome.text = "Nome: " + nome
+
+            if (nome !=""&&anoNascimento !="" &&
+                binding.rbMasculino.isChecked || binding.rbFeminino.isChecked){
+
+                if(binding.rbMasculino.isChecked){
+                    sexo = "Masculino"
+                }else{
+                    sexo = "Feminino"
+                }
 
 
                 val anoAtual = LocalDateTime.now().year
@@ -64,7 +78,14 @@ class PessoaFragment : Fragment(){
                     faixaE = faixaE
 
                 )
-                viewModel.insert(pessoa)
+                viewModel.pessoa.value?.let {
+
+                    viewModel.update(pessoa)
+
+                }?: run {
+                    viewModel.insert(pessoa)
+                }
+
 
                 binding.etNome.editableText.clear()
                 binding.etIdade.editableText.clear()
@@ -76,7 +97,30 @@ class PessoaFragment : Fragment(){
 
 
         }
+        binding.btnDeletar.setOnClickListener{
+            AlertDialog.Builder(requireContext())
+                .setTitle("Exclusão de pessoa")
+                .setMessage("Você realmente deseja excluir?")
+                .setPositiveButton("Sim"){ _,_ ->
+                    viewModel.delete(viewModel.pessoa.value?.id ?: 0)
+                    findNavController().navigateUp()
+                }
+                .setNegativeButton("Não"){_,_ ->}
+                .show()
+
+            viewModel.delete(viewModel.pessoa.value?.id ?: 0)
+            findNavController().navigateUp()
+        }
+        viewModel.pessoa.observe(viewLifecycleOwner){pessoa->
+            binding.etNome.setText(pessoa.nome)
+            binding.etIdade.setText((LocalDateTime.now().year - pessoa.idade).toString())
+
+            if (pessoa.sexo == "Masculino"){
+                binding.rbMasculino.isChecked = true
+            }else{
+                binding.rbFeminino.isChecked = true
+            }
+            binding.btnDeletar.visibility = View.VISIBLE
+        }
     }
-
-
 }

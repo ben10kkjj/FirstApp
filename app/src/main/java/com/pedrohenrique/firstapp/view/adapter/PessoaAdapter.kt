@@ -4,30 +4,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.pedrohenrique.firstapp.R
 import com.pedrohenrique.firstapp.databinding.ListItemPessoaBinding
 import com.pedrohenrique.firstapp.service.model.Pessoa
 
 class PessoaAdapter(pessoas: List<Pessoa>?, private val clickListListener: (Pessoa)-> Unit):
         RecyclerView.Adapter<PessoaAdapter.PessoaViewHolder>(){
 
+            //Criar uma lista vazia de pessoas
             private var pessoaList: List<Pessoa> = arrayListOf()
 
     class PessoaViewHolder(private val binding: ListItemPessoaBinding):
             RecyclerView.ViewHolder(binding.root){
+
+
+                //Carregas as informações da pessoa na lista
                 fun bind(pessoa: Pessoa, clickListListener: (Pessoa)-> Unit){
                     binding.tvNome.text = pessoa.nome
                     binding.tvIdade.text = pessoa.idade.toString()
                     binding.tvFaixaE.text = pessoa.faixaE
 
                     if (pessoa.sexo == "Masculino"){
-                        binding.ivSexoM.visibility = View.VISIBLE
-                        binding.ivSexoF.visibility = View.GONE
+                        binding.ivSexoM .setImageResource(R.drawable.man)
                     }
                     else{
-                        binding.ivSexoF.visibility = View.VISIBLE
-                        binding.ivSexoM.visibility = View.GONE
-                    }
+                        binding.ivSexoF.setImageResource(R.drawable.woman)
 
+                    }
+            //Configura algum item da lista
                     binding.root.setOnClickListener{
                         clickListListener(pessoa)
                     }
@@ -46,6 +50,8 @@ class PessoaAdapter(pessoas: List<Pessoa>?, private val clickListListener: (Pess
     override fun onBindViewHolder(holder: PessoaViewHolder, position: Int) {
         holder.bind(pessoaList[position], clickListListener)
     }
+
+    //carrega a lista de pessoas para serem exibidas
     fun updatePessoas(list: List<Pessoa>){
         pessoaList = list
         notifyDataSetChanged()

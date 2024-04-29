@@ -2,6 +2,8 @@ package com.pedrohenrique.firstapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Insert
 import com.pedrohenrique.firstapp.service.model.Pessoa
@@ -12,6 +14,10 @@ import kotlinx.coroutines.launch
 class PessoaViewModel(application: Application):AndroidViewModel(application) {
     private val repository = PessoaRepository(application)
 
+    private val mPessoa = MutableLiveData<Pessoa>()
+    val pessoa: LiveData<Pessoa> = mPessoa
+
+
     fun insert(pessoa: Pessoa) {
         viewModelScope.launch (Dispatchers.IO){
             repository.insertPessoa(pessoa)
@@ -19,7 +25,7 @@ class PessoaViewModel(application: Application):AndroidViewModel(application) {
     }
     fun getPessoa(id:Int){
         viewModelScope.launch (Dispatchers.IO){
-            repository.getPessoa(id)
+            mPessoa.postValue(repository.getPessoa(id))
         }
     }
     fun update(pessoa: Pessoa){
